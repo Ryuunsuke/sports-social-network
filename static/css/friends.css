@@ -1,0 +1,58 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Exactly 3 columns */
+    gap: 20px;
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+    }
+  }
+
+  @media (max-width: 600px) {
+    .grid {
+      grid-template-columns: 1fr; /* 1 column on phones */
+    }
+  }
+
+  .friend-card {
+    background: #333333;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    color:white;
+  }
+
+  .friend-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .friend-name {
+    margin: 10px 0 5px;
+    font-weight: bold;
+  }
+
+  button {
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  button.unfriend {
+    background-color: #e53935;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }

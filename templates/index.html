@@ -11,26 +11,28 @@
     <link rel="stylesheet" href="../static/css/index.css">
 	<link rel="stylesheet" href="../static/css/indexbootstrap.css">
 	<link rel="stylesheet" href="../static/css/signup.css">
+	<!-- <link rel="stylesheet" href="../static/css/nav.css"> -->
 </head>
 	<body id="page-top">
-			<!-- Navigation-->
-			<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-				<div class="container px-4 px-lg-5">
-					<a class="navbar-brand" href="#page-top">Start Bootstrap</a>
-					<button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-						Menu
-						<i class="fas fa-bars"></i>
-					</button>
-					<div class="collapse navbar-collapse" id="navbarResponsive">
-						<ul class="navbar-nav ms-auto">
-							<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-							<li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
-							<li class="nav-item"><a class="nav-link" href="#signup">Login/SignUp</a></li>
-						</ul>
-					</div>
+		<!-- Navigation -->
+		<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+			<div class="container px-4 px-lg-5">
+				<a class="navbar-brand" href="#page-top">Sportbook</a>
+				<button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+					Menu
+					<i class="fas fa-bars"></i>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarResponsive">
+					<ul class="navbar-nav ms-auto">
+						<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+						<li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+						<li class="nav-item"><a class="nav-link" href="#signup">Login/SignUp</a></li>
+					</ul>
 				</div>
-			</nav>
-		
+			</div>
+		</nav>
+		<!-- end nav -->
+		<!-- title -->
 		<div class="sportbook">
 			<section class="sportbook__header">
 				<div class="sportbook__visuals">
@@ -50,8 +52,8 @@
 				<h2 class="sportbook__title2">Sportbook</h2>
 			</section>
 		</div>
-		
-	<!-- About-->
+		<!-- end title -->
+		<!-- About-->
 		<section class="about-section text-center" id="about">
 			<div class="container px-4 px-lg-5">
 				<div class="row gx-4 gx-lg-5 justify-content-center">
@@ -110,13 +112,13 @@
 				</div>
 			</div>
 		</section>
-		<!-- Signup-->
+		<!-- Sign up-->
 		<section class="signup-section" id="signup">
 			<div class="container px-4 px-lg-5">
 				<div class="row gx-4 gx-lg-5">
 					<div class="col-md-10 col-lg-8 mx-auto text-center">
 						<!-- Button -->
-						<div class="signup-wrap" data-modal="modalOne">
+						<div class="signup-wrap">
 							<button>
 								<span>Sign Up</span>
 							</button>
@@ -135,23 +137,56 @@
 					</div>
 				</div>
 			</div>
-			<div id="modalOne" class="modal">
-				<div class="modal-content">
-					<div class="contact-form">
-						<a class="close">&times;</a>
-						<form action="dashboard.html">
-							<h2>Login</h2>
-							<div>
-								<input class="fname" type="text" name="name" placeholder="Full name" />
-								<input type="text" name="name" placeholder="Email" />
-								<input type="text" name="name" placeholder="Phone number" />
-								<input type="password" name="password" placeholder="password" />
-							</div>
-							<button type="submit" href="dashboard.html">Submit</button>
-						</form>
+			<!-- modals -->
+			<div id="id01" class="loginmodal">
+				<form class="loginmodal-content animate" id="logmodal">
+					<div class="imgcontainer">
+						<span onclick="closemodals()" class="close" title="Close Modal">&times;</span>
 					</div>
+				
+					<div class="container">
+						<label for="uname"><b>Email</b></label>
+						<input type="text" id="LEmail" placeholder="Enter Email" name="LEmail" required>
+					
+						<label for="psw"><b>Password</b></label>
+						<input type="password" id="LPSW" placeholder="Enter Password" name="LPSW" required>
+							
+						<span class="register">Don't have an account? <a onclick="showRegister()">Register</a></span>
+					</div>
+				
+					<div class="container" style="background-color:#FFFF">
+						<button type="button" onclick="closemodals()" class="cancelbtn">Cancel</button>
+						<button type="submit" class="loginbtn" onclick="window.location.href='dashboard.html'">Login</button>
+					</div>
+					
+				</form>
 				</div>
+	
+				<div id="id02" class="registermodal">
+				<form class="registermodal-content animate" id="regmodal">
+					<div class="imgcontainer">
+						<span onclick="closemodals()" class="close" title="Close Modal">&times;</span>
+					</div>
+				
+					<div class="container">
+						<label for="registeremail"><b>Email</b></label>
+						<input type="text" id="REmail" placeholder="Enter Email" name="REmail" required>
+					
+						<label for="registerpsw"><b>Password</b></label>
+						<input type="password" id="RPSW" placeholder="Enter Password" name="RPSW" required>
+							
+						<span class="register">Already have an account? <a onclick="showLogin()">Login</a></span>
+					</div>
+				
+					<div class="container" style="background-color:#FFFF">
+						<button type="button" onclick="closemodals()" class="cancelbtn">Cancel</button>
+						<button type="submit" class="registerbtn">Register</button>
+					</div>
+					
+				</form>
 			</div>
+			<!--  end modals -->
+		<!-- end Sign up -->
 		</section>
 		<!-- Contact-->
 		<section class="contact-section bg-black">
@@ -179,6 +214,8 @@
 		<script src="../static/js/index.js"></script>
 		<script src="../static/js/signup.js"></script>
 		<script src="../static/js/indexnavbar.js"></script>
+		<script src="../static/js/utilities.js"></script>
+		<script src="../static/js/nav.js"></script>
 
 	</body>
 </html>
