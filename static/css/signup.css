@@ -36,11 +36,12 @@
 /* Button Wrap Container */
 .signup-wrap {
   position: relative;
-  z-index: 2;
+  z-index: 1000;
   border-radius: 999vw;
   background: transparent;
   pointer-events: none;
   transition: all var(--anim--hover-time) var(--anim--hover-ease);
+  /* display: none; */
 }
 
 /* Button Shadow Container */
@@ -142,6 +143,9 @@ button span {
   transition: all var(--anim--hover-time) var(--anim--hover-ease);
   padding-inline: 1.5em;
   padding-block: 0.875em;
+  justify-content: center;
+  align-items: center;
+  text-align: center; /* Just in case */
 }
 
 button:hover span {
@@ -150,6 +154,9 @@ button:hover span {
 
 /* Text */
 button span::after {
+  justify-content: center;
+  align-items: center;
+  text-align: center; /* Just in case */
   content: "";
   display: block;
   position: absolute;
@@ -354,7 +361,7 @@ span.logout {
 .loginmodal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 1000; /* Sit on top */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -375,7 +382,7 @@ span.logout {
 .registermodal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 1000; /* Sit on top */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -383,14 +390,21 @@ span.logout {
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   padding-top: 60px;
+  overflow: hidden; /* Prevent scroll on the outer layer */
 }
 
 /* Modal Content/Box */
 .registermodal-content {
+  max-height: 120vh;
   background-color: #FFFF;
-  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  margin: 0 auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
   border: 1px solid #888;
   width: 50%; /* Could be more or less, depending on screen size */
+  overflow-y: auto;
+}
+
+body.modal-open {
+  overflow: hidden;
 }
 
 /* The Close Button (x) */
@@ -432,12 +446,15 @@ span.logout {
   span.register {
     display: block;
     float: none;
+    cursor: pointer;
   }
   .cancelbtn {
     width: 100%;
+    cursor: pointer;
   }
   span.logout {
     display: block;
     float: none;
+    cursor: pointer;
   }
 }

@@ -506,3 +506,8 @@
       border-bottom: 0.25rem solid #64a19d;
     }
   }
+  
+  .card-header-tabs .nav-link.active {
+    background-color: var(--bs-card-bg);
+    border-bottom-color: var(--bs-card-bg);
+  }
