@@ -1,39 +1,32 @@
-$(document).ready(function(){
-    // Handle login form submission
-    $('#logmodal').submit(function(e){
-        e.preventDefault();  // Prevent the default form submission
+const form = document.getElementById('logmodal');
 
-        // Prepare data for the request
-        let email = $('#LEmail').val();
-        let password = $('#LPSW').val();
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-        // Use jQuery's form serialization for URL-encoded format
-        let data = {
-            email: email,
-            password: password
-        };
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
 
-        // Make the AJAX request
-        $.ajax({
-            type: 'POST',
-            url: 'login.php',  // Pointing to a PHP file
-            data: data,        // Sending as URL-encoded key-value pairs
-            success: function(response){
-                try {
-                    let res = JSON.parse(response);  // Parse JSON string returned by PHP
+    const formData = new FormData(this);
 
-                    if (res.success) {
-                        openChat();  // Call a function on successful login
-                    } else {
-                        alert(res.message);
-                    }
-                } catch (e) {
-                    alert('Invalid server response.');
-                }
-            },
-            error: function(){
-                alert('Login failed. Please try again.');
-            }
-        });
+    fetch('./routes/logAuth.php', {
+    method: 'POST',
+    body: formData
+    })
+    .then(response => response.text())  // get raw text first
+    .then(text => {
+    try {
+        const data = JSON.parse(text);
+        if(data.success){
+        alert(data.message);
+        this.reset();
+        window.location.href = './templates/dashboard.html';
+        } else {
+        alert('Error: ' + data.message);
+        }
+    } catch (e) {
+        console.error('Failed to parse JSON:', e);
+        console.log('Raw response:', text);
+        alert('Server returned invalid response. Check console.');
+    }
     });
 });

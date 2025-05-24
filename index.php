@@ -1,3 +1,46 @@
+<?php
+	require "./functions/dtbcon.php";
+
+	// If AJAX request for provinces
+	if (isset($_GET['country_id'])) {
+		$country_id = $_GET['country_id'];
+
+		$sql = "SELECT * FROM province WHERE country_id = ?";
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute([$country_id]);
+		$provinces = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		header('Content-Type: application/json');
+		echo json_encode($provinces);
+		exit;
+	}
+
+	// If AJAX request for towns
+	if (isset($_GET['province_id'])) {
+		$province_id = $_GET['province_id'];
+
+		$sql = "SELECT * FROM town WHERE province_id = ?";
+		$stmt = $pdo->prepare($sql);
+		$stmt->execute([$province_id]);
+		$towns = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		header('Content-Type: application/json');
+		echo json_encode($towns);
+		exit;
+	}
+
+	// Otherwise, load data for initial page rendering
+	$sql = "SELECT * FROM activitytype";
+	$stmt = $pdo->prepare($sql);
+	$stmt->execute();
+	$RAT = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+	$sql = "SELECT * FROM country";
+	$stmt = $pdo->prepare($sql);
+	$stmt->execute();
+	$RCountry = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +51,9 @@
 	<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 	<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
 	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
-    <link rel="stylesheet" href="../static/css/index.css">
-	<link rel="stylesheet" href="../static/css/indexbootstrap.css">
-	<link rel="stylesheet" href="../static/css/signup.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+	<link rel="stylesheet" href="./static/css/indexbootstrap.css">
+	<link rel="stylesheet" href="./static/css/signup.css">
 	<!-- <link rel="stylesheet" href="../static/css/nav.css"> -->
 </head>
 	<body id="page-top">
@@ -138,14 +181,14 @@
 			</div>
 			<!-- modals -->
 			<div id="id01" class="loginmodal">
-				<form class="loginmodal-content animate" id="logmodal">
+				<form class="loginmodal-content animate" id="logmodal" method="POST">
 					<div class="imgcontainer">
 						<span onclick="closemodals()" class="close" title="Close Modal">&times;</span>
 					</div>
 				
 					<div class="container">
 						<label for="uname"><b>Email</b></label>
-						<input type="text" id="LEmail" placeholder="Enter Email" name="LEmail" required>
+						<input type="email" id="LEmail" placeholder="Enter Email" name="LEmail" required>
 					
 						<label for="psw"><b>Password</b></label>
 						<input type="password" id="LPSW" placeholder="Enter Password" name="LPSW" required>
@@ -155,24 +198,26 @@
 				
 					<div class="container" style="background-color:#FFFF">
 						<button type="button" onclick="closemodals()" class="cancelbtn">Cancel</button>
-						<button type="submit" class="loginbtn" onclick="window.location.href='dashboard.html'">Login</button>
+						<button type="submit" class="loginbtn">Login</button>
 					</div>
 					
 				</form>
 			</div>
 	
 			<div id="id02" class="registermodal">
-				<form class="registermodal-content animate" id="regmodal">
+				<form class="registermodal-content animate" id="regmodal" method="POST">
 					<div class="imgcontainer">
 						<span onclick="closemodals()" class="close" title="Close Modal">&times;</span>
 					</div>
 				
 					<div class="container">
 						<label for="registeremail"><b>Email</b></label>
-						<input type="text" id="REmail" placeholder="Enter Email" name="REmail" required>
-					
+						<br>
+						<input type="email" id="REmail" placeholder="Enter Email" name="REmail" required>
+						<br>
+
 						<label for="registerpsw"><b>Password</b></label>
-						<input type="password" id="RPSW" placeholder="Enter Password" name="RPSW" required>
+						<input type="password" id="RPSW" placeholder="Enter Password" name="RPSW" required minlength="6" maxlength="12">
 
 						<label for="registername"><b>Name</b></label>
 						<input type="text" id="RName" placeholder="Enter Name" name="RName">
@@ -184,32 +229,46 @@
 						<br>
 						<select name="RAT" id="RAT" required>
 							<option value="">--Select--</option>
+							<?php if ($RAT): ?>
+								<?php foreach ($RAT as $AT): ?>
+									<option value="<?php echo htmlspecialchars($AT['id']); ?>">
+										<?php echo htmlspecialchars($AT['name']); ?>
+									</option>
+								<?php endforeach; ?>
+							<?php endif; ?>
 						</select>
 						<br>
 
 						<label for="registerdob"><b>Date Of Birth</b></label>
 						<br>
-						<input type="date" id="RDOB" placeholder="Enter Date of Birth" name="RDOB">
+						<input type="date" id="RDOB" placeholder="Enter Date of Birth" name="RDOB" onchange="checkAge()">
 						<br>
 						
 						<label for="registercountry"><b>Country</b></label>
 						<br>
 						<select name="RCountry" id="RCountry" required>
 							<option value="">--Select--</option>
+							<?php foreach ($RCountry as $country): ?>
+								<option value="<?php echo htmlspecialchars($country['id']); ?>">
+									<?php echo htmlspecialchars($country['name']); ?>
+								</option>
+							<?php endforeach; ?>
 						</select>
 						<br>
 						
 						<label for="registerprovince"><b>Province</b></label>
 						<br>
 						<select name="RProvince" id="RProvince" required>
-							<option value="">--Select--</option>
+							<option value="">--Select Country First--</option>
+							<option value="Example">Example</option>
 						</select>
 						<br>
 
 						<label for="registertown"><b>Town</b></label>
 						<br>
 						<select name="RTown" id="RTown" required>
-							<option value="">--Select--</option>
+							<option value="">--Select Province First--</option>
+							<option value="Example">Example</option>
 						</select>
 						<br>
 							
@@ -224,17 +283,6 @@
 				</form>
 			</div>
 
-			<div id="id03" class="alertingmodal">
-				<div class="alertingmodal-content animate" id="alertmodal">
-					<div class="imgcontainer">
-						<span onclick="closealert()" class="close" title="Close Alert">&times;</span>
-					</div>
-					<div class="alertcontainer" id="alertcontent"></div>
-					<div class="alertcontainer" style="background-color:#FFFF">
-						<button type="button" onclick="closealert()" class="closebtn">Close</button>
-					</div>
-				</div>
-			</div>
 			<!--  end modals -->
 		<!-- end Sign up -->
 		</section>
@@ -257,11 +305,12 @@
 		<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 		<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 
-		<script src="../static/js/index.js"></script>
-		<script src="../static/js/signup.js"></script>
-		<script src="../static/js/indexnavbar.js"></script>
-		<script src="../static/js/utilities.js"></script>
-		<script src="../static/js/nav.js"></script>
+		<script src="./static/js/index.js"></script>
+		<script src="./static/js/login.js"></script>
+		<script src="./static/js/signup.js"></script>
+		<script src="./static/js/indexnavbar.js"></script>
+		<script src="./static/js/utilities.js"></script>
+		<script src="./static/js/nav.js"></script>
 
 	</body>
 </html>

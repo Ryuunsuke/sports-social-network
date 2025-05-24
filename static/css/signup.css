@@ -294,7 +294,7 @@ button:active::after {
   text-shadow: 0.025em 0.25em 0.05em rgba(0, 0, 0, 0.12);
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], select, input[type=date], input[type=email] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
