@@ -1,3 +1,9 @@
+<?php
+  session_start();
+  require "../functions/dtbcon.php";
+  require "../routes/nav.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,10 +28,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+            <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
             <li class="nav-item"><a class="nav-link" href="friends.html">Friends</a></li>
-            <li class="nav-item"><a class="nav-link" href="admin.html">Administration</a></li>
+            <?php if ($_SESSION['user_role'] == "1"): ?>
+              <li class="nav-item"><a class="nav-link" href="admin.html">Administration</a></li>
+            <?php endif; ?>
+            <li class="nav-item"><a class="nav-link" href="../routes/logout.php">Logout</a></li>
           </ul>
         </div>
       </div>
@@ -36,27 +45,33 @@
   <div class="page-container"><br/>
     <section id="title-header" class="title-header">
 			<header class="section-header">
-				<h3>Hi, <span id="username">Tester</span></h3>
+				<h3>Hi, <span>
+          <?php echo $name; ?>
+        </span></h3>
 			</header>
 			<div class="title-container">
 			<hr color="white" />
 				<div class="row counters">
 					<!-- Left: Friends -->
           <div class="col-lg-4 col-4 text-center">
-            <span data-toggle="counter-up" id="friends-count" style="color: white;">789</span>
+            <span data-toggle="counter-up" id="friends-count" style="color: white;">
+              <?php echo $friendcount; ?>
+            </span>
             <p style="color: white;">Friends</p>
           </div>
     
           <!-- Middle: Profile Picture -->
           <div class="col-lg-4 col-4 text-center">
-            <div class="profile-picture">
-              <img src="../static/assets/profile-pic.jpg" alt="Profile picture" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid white;">
-            </div>
-          </div>
+						<div class="profile-picture">
+							<img src="<?php echo htmlspecialchars($imagePath); ?>" alt="Profile picture" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid white;">
+						</div>
+					</div>
     
           <!-- Right: Posts -->
           <div class="col-lg-4 col-4 text-center">
-            <span data-toggle="counter-up" id="posts-count" style="color: white;">12</span>
+            <span data-toggle="counter-up" id="posts-count" style="color: white;">
+              <?php echo $postcount; ?>
+            </span>
             <p style="color: white;">No. of Posts</p>
           </div>    
 				</div>
@@ -175,9 +190,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script src="https://unpkg.com/@studio-freight/lenis"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>

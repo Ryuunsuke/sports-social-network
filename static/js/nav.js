@@ -1,50 +1,38 @@
-window.addEventListener('DOMContentLoaded', event => {
-
-    // Navbar shrink function
-    var navbarShrink = function () {
-        const navbarCollapsible = document.body.querySelector('#mainNav');
-        if (!navbarCollapsible) {
-            return;
-        }
-        if (window.scrollY === 0) {
-            navbarCollapsible.classList.remove('navbar-shrink')
-        } else {
-            navbarCollapsible.classList.add('navbar-shrink')
-        }
-
-    };
-
-    // Shrink the navbar 
-    navbarShrink();
-
-    // Shrink the navbar when page is scrolled
-    document.addEventListener('scroll', navbarShrink);
-
-    // Activate Bootstrap scrollspy on the main nav element
-    const mainNav = document.body.querySelector('#mainNav');
-    if (mainNav) {
-        new bootstrap.ScrollSpy(document.body, {
-            target: '#mainNav',
-            rootMargin: '0px 0px -40%',
-        });
-    };
-
-    // Collapse responsive navbar when toggler is visible
-    const navbarToggler = document.body.querySelector('.navbar-toggler');
-    const responsiveNavItems = [].slice.call(
-        document.querySelectorAll('#navbarResponsive .nav-link')
-    );
-    responsiveNavItems.map(function (responsiveNavItem) {
-        responsiveNavItem.addEventListener('click', () => {
-            if (window.getComputedStyle(navbarToggler).display !== 'none') {
-                navbarToggler.click();
-            }
-        });
-    });
-
+// Initialize Lenis
+const lenis = new Lenis({
+  smooth: true,
+  direction: "vertical",
+  gestureDirection: "vertical",
+  smoothTouch: false,
+  touchMultiplier: 2,
 });
-/* Lenis */
-const lenis = new Lenis();
-lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add((time) => {lenis.raf(time * 1000);});
-gsap.ticker.lagSmoothing(0);
+
+// GSAP integration
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
+// Optional: Hook Lenis scroll into ScrollTrigger
+lenis.on('scroll', () => {
+  ScrollTrigger.update();
+});
+
+// Navbar shrink logic
+function navbarShrink(scrollY) {
+  const navbar = document.querySelector('#mainNav');
+  if (!navbar) return;
+  if (scrollY > 0) {
+    navbar.classList.add('navbar-shrink');
+  } else {
+    navbar.classList.remove('navbar-shrink');
+  }
+}
+
+// Track scroll position via Lenis
+let lastScrollY = 0;
+lenis.on('scroll', ({ scroll }) => {
+  lastScrollY = scroll;
+  navbarShrink(scroll);
+});

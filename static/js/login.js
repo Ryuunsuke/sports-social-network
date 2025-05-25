@@ -19,7 +19,7 @@ form.addEventListener('submit', function(e) {
         if(data.success){
         alert(data.message);
         this.reset();
-        window.location.href = './templates/dashboard.html';
+        window.location.href = './templates/dashboard.php';
         } else {
         alert('Error: ' + data.message);
         }

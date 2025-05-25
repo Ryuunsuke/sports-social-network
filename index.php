@@ -1,44 +1,5 @@
 <?php
-	require "./functions/dtbcon.php";
-
-	// If AJAX request for provinces
-	if (isset($_GET['country_id'])) {
-		$country_id = $_GET['country_id'];
-
-		$sql = "SELECT * FROM province WHERE country_id = ?";
-		$stmt = $pdo->prepare($sql);
-		$stmt->execute([$country_id]);
-		$provinces = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		header('Content-Type: application/json');
-		echo json_encode($provinces);
-		exit;
-	}
-
-	// If AJAX request for towns
-	if (isset($_GET['province_id'])) {
-		$province_id = $_GET['province_id'];
-
-		$sql = "SELECT * FROM town WHERE province_id = ?";
-		$stmt = $pdo->prepare($sql);
-		$stmt->execute([$province_id]);
-		$towns = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		header('Content-Type: application/json');
-		echo json_encode($towns);
-		exit;
-	}
-
-	// Otherwise, load data for initial page rendering
-	$sql = "SELECT * FROM activitytype";
-	$stmt = $pdo->prepare($sql);
-	$stmt->execute();
-	$RAT = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-	$sql = "SELECT * FROM country";
-	$stmt = $pdo->prepare($sql);
-	$stmt->execute();
-	$RCountry = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	require "./functions/display.php";
 ?>
 
 <!DOCTYPE html>
@@ -220,19 +181,19 @@
 						<input type="password" id="RPSW" placeholder="Enter Password" name="RPSW" required minlength="6" maxlength="12">
 
 						<label for="registername"><b>Name</b></label>
-						<input type="text" id="RName" placeholder="Enter Name" name="RName">
+						<input type="text" id="name" name="name" placeholder="Enter Name">
 
 						<label for="registersurname"><b>Surname</b></label>
-						<input type="text" id="RSurname" placeholder="Enter Surname" name="RSurname">
+						<input type="text" id="surname" name="surname" placeholder="Enter Surname">
 
 						<label for="registeractivity"><b>Prefered Activity Type</b></label>
 						<br>
-						<select name="RAT" id="RAT" required>
+						<select id="at" name="at" required>
 							<option value="">--Select--</option>
-							<?php if ($RAT): ?>
-								<?php foreach ($RAT as $AT): ?>
-									<option value="<?php echo htmlspecialchars($AT['id']); ?>">
-										<?php echo htmlspecialchars($AT['name']); ?>
+							<?php if ($AT): ?>
+								<?php foreach ($AT as $atItem): ?>
+									<option value="<?php echo htmlspecialchars($atItem['id']); ?>">
+										<?php echo htmlspecialchars($atItem['name']); ?>
 									</option>
 								<?php endforeach; ?>
 							<?php endif; ?>
@@ -241,16 +202,16 @@
 
 						<label for="registerdob"><b>Date Of Birth</b></label>
 						<br>
-						<input type="date" id="RDOB" placeholder="Enter Date of Birth" name="RDOB" onchange="checkAge()">
+						<input type="date" id="dob" name="dob" placeholder="Enter Date of Birth" onchange="checkAge()">
 						<br>
 						
 						<label for="registercountry"><b>Country</b></label>
 						<br>
-						<select name="RCountry" id="RCountry" required>
+						<select id="country" name="country" required>
 							<option value="">--Select--</option>
-							<?php foreach ($RCountry as $country): ?>
-								<option value="<?php echo htmlspecialchars($country['id']); ?>">
-									<?php echo htmlspecialchars($country['name']); ?>
+							<?php foreach ($country as $countries): ?>
+								<option value="<?php echo htmlspecialchars($countries['id']); ?>">
+									<?php echo htmlspecialchars($countries['name']); ?>
 								</option>
 							<?php endforeach; ?>
 						</select>
@@ -258,7 +219,7 @@
 						
 						<label for="registerprovince"><b>Province</b></label>
 						<br>
-						<select name="RProvince" id="RProvince" required>
+						<select id="province" name="province" required>
 							<option value="">--Select Country First--</option>
 							<option value="Example">Example</option>
 						</select>
@@ -266,7 +227,7 @@
 
 						<label for="registertown"><b>Town</b></label>
 						<br>
-						<select name="RTown" id="RTown" required>
+						<select id="town" name="town" required>
 							<option value="">--Select Province First--</option>
 							<option value="Example">Example</option>
 						</select>
@@ -294,6 +255,11 @@
 				</div>
 			</div>
 		</section>
+
+		<script>
+			const isLoggedIn = <?php echo json_encode($isLoggedIn); ?>;
+		</script>
+
 		<!-- Bootstrap core JS-->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -311,6 +277,6 @@
 		<script src="./static/js/indexnavbar.js"></script>
 		<script src="./static/js/utilities.js"></script>
 		<script src="./static/js/nav.js"></script>
-
+		<script src="../static/js/addresschange.js"></script>
 	</body>
 </html>
