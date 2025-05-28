@@ -7,6 +7,17 @@
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':user_id' => $user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+	
+	$query = $pdo->prepare("
+		SELECT p.id, p.user_id, p.title, p.post_date, p.route_id,
+			at.name AS activity_type_name
+		FROM post p
+		JOIN user u ON p.user_id = u.id
+		JOIN activitytype at ON p.activity_type_id = at.id
+		ORDER BY p.post_date DESC
+	");
+	$query->execute();
+	$myposts = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	$surname = $user['surname'];
 	$dob = $user['birth_date'];

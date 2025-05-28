@@ -10,13 +10,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Profile Page</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link  href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.css" rel="stylesheet"/>
   <link rel="stylesheet" href="../static/css/post.css">
   <link rel="stylesheet" href="../static/css/nav.css">
   <link rel="stylesheet" href="../static/css/indexbootstrap.css">
   <link rel="stylesheet" href="../static/css/main.css">
   <link rel="stylesheet" href="../static/css/cropper.css">
-  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
 </head>
 <body>
 
@@ -217,107 +218,177 @@
 		</div>
 		<!-- end description -->
 
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+		<script src="https://rawcdn.githack.com/mpetazzoni/leaflet-gpx/master/gpx.js" defer></script>
+
 		<!-- Posts Section Starts Here -->
 		<h3 class="text-xl font-semibold mb-4" style="color: white;">Your posts</h3>
 		<h2 id="js-error" style="padding: 20px;">Loading...</h2>
-		<!-- emoji -->
-		<div id="mother">
-			<div class="reaction" id="emojies">
-				<div class="row">
-					<img id="e-like" src="../static/svg/like.svg" alt="Like">
-				</div>
-			</div>
-		<div class="boxwrapper" data-post-id="0">
-			<!-- Top Section -->
-			<div class="top-s">
-				<div class="top-info">
-					<div class="profile-picture">
-						<img src="../static/assets/profile-pic.jpg" alt="Profile picture">
-					</div>
-					<div class="top-title">
-						<div class="profile-name">
-							<a href="#">Sportbook Tester</a>
-						</div>
-					</div>
-				</div>
-				<div class="post-content">
-					<strong>Sportbook Post</strong><br />
-					Hello world <br />
-					I'm feeling great today!
-				</div>
-			</div>
+		<?php if ($myposts): ?>
+			<?php foreach ($myposts as $post): ?>
+				<div class="boxwrapper" data-post-id="<?= htmlspecialchars($post['id']) ?>">
 
-			<!-- Like Section -->
-			<div class="like-section">
-				<div class="top-part">
-					<div class="left-part">
-						<div class="react">
-							<img src="../static/svg/like.svg" alt="Like Reaction">
+					<!-- Top Section -->
+					<div class="top-s">
+						<div class="top-info">
+							<div class="profile-picture">
+								<img src="<?php echo htmlspecialchars($imagePath); ?>" alt="Profile picture" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid white;">
+							</div>
+							<div class="top-title">
+								<div class="profile-name">
+									<a href="#"><?= htmlspecialchars($name) ?> <?= htmlspecialchars($surname) ?> </a>
+								</div>
+								<small><?= htmlspecialchars($post['post_date']) ?></small>
+							</div>
 						</div>
-						<div class="id-name">
-							<p>You, Tester2 and <span>9</span> others</p>
+						<div class="post-content">
+							<strong><?= htmlspecialchars($post['title']) ?></strong><br />
+							Activity Type: <?= htmlspecialchars($post['activity_type_name']) ?><br />
+							Date: <?= htmlspecialchars($post['post_date']) ?>
 						</div>
 					</div>
-				</div>
-				<div class="bottom-part">
-					<div class="like-btn" data-fpost="0">
-						<img src="../static/svg/thumbs-up.svg" alt="Like">
-						<span>Like</span>
-					</div>
-				</div>
-			</div>
-			</div>
-		</div>
-		<!-- Post1 Section Ends Here -->
-		<!-- Post2 Section starts here -->
-		<div class="reaction" id="emojies">
-			<div class="row">
-				<img id="e-like" src="../static/svg/like.svg" alt="Like">
-			</div>
-		</div>
 
-		<div class="boxwrapper" data-post-id="0">
-			<!-- Top Section -->
-			<div class="top-s">
-				<div class="top-info">
-					<div class="profile-picture">
-						<img src="../static/assets/profile-pic.jpg" alt="Profile picture">
-					</div>
-					<div class="top-title">
-						<div class="profile-name">
-							<a href="#">Sportbook Tester</a>
-						</div>
-					</div>
-				</div>
-				<div class="post-content">
-					<strong>Sportbook Post</strong><br />
-					Hello world <br />
-					I'm feeling great today!
-				</div>
-			</div>
+					<!-- GPX Map Display -->
+                    <div class="boxwrapper">
+                        <div id="map-<?= $post['id'] ?>" style="height: 500px;"></div>
+                    </div>
 
-			<!-- Like Section -->
-			<div class="like-section">
-				<div class="top-part">
-					<div class="left-part">
-						<div class="react">
-							<img src="../static/svg/like.svg" alt="Like Reaction">
+					<script>
+						const postMapIds = <?= json_encode(array_column($myposts, 'id')) ?>;
+
+						document.addEventListener("DOMContentLoaded", function () {
+							postMapIds.forEach(postId => {
+								const mapId = "map-" + postId;
+								const mapContainer = document.getElementById(mapId);
+								if (!mapContainer) return;
+
+								const map = L.map(mapId).setView([0, 0], 2);
+								L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+									attribution: '© OpenStreetMap contributors'
+								}).addTo(map);
+
+								const gpxOptions = {
+									async: true,
+									marker_options: {
+										startIconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/pin-icon-start.png',
+										endIconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/pin-icon-end.png',
+										shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/pin-shadow.png'
+									}
+								};
+
+								fetch("../functions/getpostgpx.php?id=" + postId)
+									.then(res => res.text())
+									.then(gpxText => {
+										const gpxLayer = new L.GPX(gpxText, gpxOptions)
+											.on('loaded', function(e) {
+												map.fitBounds(e.target.getBounds());
+											})
+											.addTo(map);
+									});
+							});
+						});
+					</script>
+
+                    <!-- Pictures -->
+                    <div class="prompt mt-4 mb-4">
+                        <div class="text-center">
+                            <!-- Images -->
+							<div class="post-images">
+								<div class="post-images">
+									<div id="post-images-container-<?= $post['id'] ?>"></div>
+								</div>
+								<script>
+									const postId = <?= json_encode($post['id']) ?>;
+
+									function loadImages(postId) {
+										fetch('../functions/getpicperpost.php?post_id=' + postId)
+											.then(response => response.json())
+											.then(images => {
+												const container = document.getElementById('post-images-container-' + postId);
+												container.innerHTML = '';
+
+												if (images.length === 0) {
+													container.innerHTML = '<p>No images for this post.</p>';
+													return;
+												}
+
+												images.forEach(src => {
+													const imgDiv = document.createElement('div');
+													imgDiv.className = 'post-image';
+
+													const img = document.createElement('img');
+													img.src = src;
+													img.alt = 'Post Image';
+													img.style.maxWidth = '100%';
+													img.style.height = 'auto';
+													img.style.marginBottom = '10px';
+
+													imgDiv.appendChild(img);
+													container.appendChild(imgDiv);
+												});
+											})
+											.catch(err => {
+												console.error('Error loading images:', err);
+											});
+									}
+
+									document.addEventListener('DOMContentLoaded', () => {
+										loadImages(postId);
+									});
+								</script>
+							</div>
+                        </div>
+                    </div>
+
+					<!-- Like Section -->
+					<div class="like-section">
+						<div class="top-part">
+							<div class="left-part">
+								<div class="react">👏🏿</div>
+								<div class="id-name">
+									<div id="post-likes-container-<?= $post['id'] ?>"></div>
+								</div>
+								<script>
+									function loadLikes(postId) {
+										fetch('../functions/getlikeperpost.php?post_id=' + postId)
+											.then(response => response.json())
+											.then(data => {
+
+												const container = document.getElementById('post-likes-container-' + postId);
+												if (!container) return;
+
+												container.textContent = data.text;
+											})
+											.catch(err => {
+												console.error('Error loading likes:', err);
+											});
+									}
+
+									document.addEventListener('DOMContentLoaded', () => {
+										loadLikes(postId);
+									});
+								</script>
+							</div>
 						</div>
-						<div class="id-name">
-							<p>You, Tester2 and <span>9</span> others</p>
+						<div class="bottom-part">
+							<form method="POST" action="../routes/likepost.php">
+								<input type="hidden" name="post_id" value="<?= $post['id'] ?>">
+								<input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>">
+								<button type="submit" class="like-btn">
+									<div class="react">👏🏿</div>
+									<span>Applaude</span>
+								</button>
+							</form>
 						</div>
 					</div>
 				</div>
-				<div class="bottom-part">
-					<div class="like-btn" data-fpost="0">
-						<img src="../static/svg/thumbs-up.svg" alt="Like">
-						<span>Like</span>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Post2 Section Ends Here -->
+			<?php endforeach; ?>
+		<?php endif; ?>
  	</div>
+
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js"></script>
+
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
 	<script src="https://unpkg.com/@studio-freight/lenis"></script>	
@@ -325,7 +396,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 	<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 	
-	<script src="../static/js/post.js"></script>
 	<script src="../static/js/nav.js"></script>
 
 	<script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.js"></script>

@@ -2,7 +2,7 @@
 session_start();
 header('Content-Type: application/json; charset=utf-8');
 
-require_once '../functions/funcAuth.php';
+require_once '../functions/utilities.php';
 require "../functions/dtbcon.php";
 
 $response = ['success' => false, 'message' => 'Unknown error'];

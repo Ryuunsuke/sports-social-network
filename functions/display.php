@@ -52,4 +52,8 @@
 	$stmt->execute();
 	$AT = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+	$stmt = $pdo->prepare("SELECT * FROM route");
+    $stmt->execute();
+    $routes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>

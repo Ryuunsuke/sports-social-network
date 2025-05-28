@@ -81,7 +81,7 @@
     <!-- Post Prompt button -->
     <div class="prompt mt-4 mb-4">
       <div class="text-center">
-        <button class="genbtn btn-primary" onclick="window.location.href='posting.html'">Post something</button>
+        <button class="genbtn btn-primary" onclick="window.location.href='routeplan.php'">Post something</button>
       </div>
     </div>
     <!-- end prompt   -->
