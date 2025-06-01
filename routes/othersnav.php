@@ -1,15 +1,7 @@
 <?php
     require "../functions/dtbcon.php";
     
-    $user_id = $_SESSION['user_id'] ?? null;
-
-    if (!$user_id) {
-    echo "<script>
-            alert('You must be logged in to access this page.');
-            window.location.href = '../index.php';
-        </script>";
-        exit();
-    }
+    $user_id = $_GET['id'];
 
     $sql = "SELECT name FROM user WHERE id = :user_id";
     $stmt = $pdo->prepare($sql);
@@ -26,24 +18,16 @@
     $stmt->execute([':user_id' => $user_id]);
     $postcount = $stmt->rowCount();
 
+    // Query to get the image path of the user's profile picture
     $sql = "SELECT i.path FROM profileimage p
             JOIN image i ON p.image_id = i.id
             WHERE p.user_id = :user_id
             ORDER BY i.id DESC
-            LIMIT 1";
+            LIMIT 1";  // get latest profile image
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':user_id' => $user_id]);
     $image = $stmt->fetch();
 
-    $imagePath = $image ? $image['path'] : '../static/assets/defaultpfp.jpg';
-
-    $sql = "SELECT u.id, u.name FROM user u
-            JOIN friend f ON f.friend_id = u.id
-            WHERE f.user_id = :user_id";
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':user_id' => $user_id]);
-    $partners = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    $imagePath = $image ? $image['path'] : '../static/assets/defaultpfp.jpg';  // fallback default image
 ?>

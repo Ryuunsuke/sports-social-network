@@ -1,6 +1,6 @@
 <?php
-	require "../functions/userinfodisplay.php";
-	require "../routes/nav.php";
+	require "../functions/otherinfodisplay.php";
+	require "../routes/othersnav.php";
 ?>
 
 <!DOCTYPE html>
@@ -50,8 +50,8 @@
 	<div class="page-container"><br/>
 		<section id="title-header" class="title-header" style="text-align: center">
 			<header class="section-header">
-				<h3>Hi, <span>
-					<?php echo $name; ?>
+				<h3><span>
+					<?php echo $name . " " . $surname; ?>
 				</span></h3>
 			</header>
 			<div class="title-container">
@@ -82,29 +82,6 @@
 				</div>
 			<hr/>
 		</section>
-		<!-- change profile prompt button -->
-		<section id="startofcrop">
-			<div class="prompt mt-4 mb-4">
-				<div class="text-center">
-					<!-- Hidden file input -->
-					<input type="file" id="inputImage" accept="image/*" style="display:none;" />
-
-					<!-- Custom button -->
-					<button class="genbtn btn-primary" id="changepfpButton" type="button">Change profile picture</button>
-
-					<div>
-						<img id="image" style="width: 500px; height: 500px; display: none;">
-					</div>
-
-					<div style="display: flex; justify-content: space-between; width: 100%;">
-						<button class="genbtn btn-primary" id="acceptcropButton" style="display:none;">Accept and Upload</button>
-						<button class="genbtn btn-primary" id="cancelcropButton" style="display:none;">Cancel</button>
-					</div>	
-				</div>
-			</div>
-		</section>	
-		
-		<!-- end prompt   -->
 		<!-- description -->
 		<h3 class="text-xl font-semibold mb-4" style="color: white;">Profile description</h3>
 		<div class="boxwrapper">
@@ -112,14 +89,14 @@
 				<div class="space-y-4">
 					<div class="flex items-center space-x-4">
 						<div class="w-full space-y-3 pl-6">
-							<form class="profile-content animate" id="profilemodal" method="POST">
+							<form class="profile-content animate" id="profilemodal" method="POST" style="user-select: none;">
 								<div>
 									<label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-									<input type="text" id="name" name="name" value="<?php echo $name ?>" required/>
+									<input type="text" id="name" name="name" value="<?php echo $name ?>" readonly/>
 								</div>
 								<div>
 									<label for="surname" class="block text-sm font-medium text-gray-700">Surname</label>
-									<input type="text" id="surname" name="surname" value="<?php echo $surname ?>" required/>
+									<input type="text" id="surname" name="surname" value="<?php echo $surname ?>" readonly/>
 								</div>
 								<div>
 									<label for="activity" class="block text-sm font-medium text-gray-700">Preferred Activity Type</label>
@@ -129,86 +106,24 @@
 										<option value="<?php echo htmlspecialchars($chosen_at['id']); ?>" selected>
 											<?php echo htmlspecialchars($chosen_at['name']); ?>
 										</option>
-
-										<!-- Loop through all ActivityTypes, excluding the chosen one -->
-										<?php if ($AT): ?>
-											<?php foreach ($AT as $ATs): ?>
-												<?php if ($ATs['id'] != $chosen_at['id']): ?>
-													<option value="<?php echo htmlspecialchars($ATs['id']); ?>">
-														<?php echo htmlspecialchars($ATs['name']); ?>
-													</option>
-												<?php endif; ?>
-											<?php endforeach; ?>
-										<?php endif; ?>
 									</select>
 									<br>
 								</div>
 								<div>
 									<label for="dob" class="block text-sm font-medium text-gray-700">Date of Birth</label>
-									<input type="date" id="dob" name="dob" value="<?php echo $dob ?>" required/>
+									<input type="date" id="dob" name="dob" value="<?php echo $dob ?>" readonly/>
 								</div>
 								<div>
 									<label for="country" class="block text-sm font-medium text-gray-700">Country</label>
-									<br>
-									<select name="country" id="country" required>
-										<!-- Display the selected country -->
-										<option value="<?php echo htmlspecialchars($chosen_country['id']); ?>" selected>
-											<?php echo htmlspecialchars($chosen_country['name']); ?>
-										</option>
-
-										<!-- Loop through countries, excluding the selected one -->
-										<?php foreach ($country as $countries): ?>
-											<?php if ($countries['id'] != $chosen_country['id']): ?>
-												<option value="<?php echo htmlspecialchars($countries['id']); ?>">
-													<?php echo htmlspecialchars($countries['name']); ?>
-												</option>
-											<?php endif; ?>
-										<?php endforeach; ?>
-									</select>
-									<br>
+									<input type="text" id="country" name="country" value="<?php echo $chosen_country['name'] ?>" readonly/>
 								</div>
 								<div>
 									<label for="province" class="block text-sm font-medium text-gray-700">Province</label>
-									<br>
-									<select name="province" id="province" required>
-										<!-- Display the selected country -->
-										<option value="<?php echo htmlspecialchars($chosen_province['id']); ?>" selected>
-											<?php echo htmlspecialchars($chosen_province['name']); ?>
-										</option>
-
-										<!-- Loop through countries, excluding the selected one -->
-										<?php foreach ($province as $provinces): ?>
-											<?php if ($provinces['id'] != $chosen_province['id']): ?>
-												<option value="<?php echo htmlspecialchars($provinces['id']); ?>">
-													<?php echo htmlspecialchars($provinces['name']); ?>
-												</option>
-											<?php endif; ?>
-										<?php endforeach; ?>
-									</select>
-									<br>
+									<input type="text" id="province" name="province" value="<?php echo $chosen_province['name'] ?>" readonly/>
 								</div>
 								<div>
 									<label for="town" class="block text-sm font-medium text-gray-700">Town</label>
-									<br>
-									<select name="town" id="town" required>
-										<!-- Display the selected country -->
-										<option value="<?php echo htmlspecialchars($chosen_town['id']); ?>" selected>
-											<?php echo htmlspecialchars($chosen_town['name']); ?>
-										</option>
-
-										<!-- Loop through countries, excluding the selected one -->
-										<?php foreach ($town as $towns): ?>
-											<?php if ($towns['id'] != $chosen_town['id']): ?>
-												<option value="<?php echo htmlspecialchars($towns['id']); ?>">
-													<?php echo htmlspecialchars($towns['name']); ?>
-												</option>
-											<?php endif; ?>
-										<?php endforeach; ?>
-									</select>
-									<br>
-								</div>
-								<div class="text-center">
-									<button type="submit" class="genbtn btn-primary" id="saveProfileBtn">Save profile</button>
+									<input type="text" id="town" name="town" value="<?php echo $chosen_town['name'] ?>" readonly/>
 								</div>
 							</form>
 						</div>
@@ -222,10 +137,10 @@
 		<script src="https://rawcdn.githack.com/mpetazzoni/leaflet-gpx/master/gpx.js" defer></script>
 
 		<!-- Posts Section Starts Here -->
-		<h3 class="text-xl font-semibold mb-4" style="color: white;">Your posts</h3>
+		<h3 class="text-xl font-semibold mb-4" style="color: white;">Posts</h3>
 		<h2 id="js-error" style="padding: 20px;">Loading...</h2>
-		<?php if ($myposts): ?>
-			<?php foreach ($myposts as $post): ?>
+		<?php if ($theirposts): ?>
+			<?php foreach ($theirposts as $post): ?>
 				<div class="boxwrapper" data-post-id="<?= htmlspecialchars($post['id']) ?>">
 
 					<!-- Top Section -->
@@ -244,7 +159,6 @@
 						<div class="post-content">
 							<strong><?= htmlspecialchars($post['title']) ?></strong><br />
 							Activity Type: <?= htmlspecialchars($post['activity_type_name']) ?><br />
-							Partner(s): <?= htmlspecialchars($post['partners']) ?><br />
 						</div>
 					</div>
 
@@ -288,7 +202,7 @@
  	</div>
 
 	<script>
-		const postMapIds = <?= json_encode(array_column($myposts, 'id')) ?>;
+		const postMapIds = <?= json_encode(array_column($theirposts, 'id')) ?>;
 
 		document.addEventListener("DOMContentLoaded", function () {
 			postMapIds.forEach(postId => {
@@ -321,6 +235,8 @@
 					});
 			});
 		});
+
+		const postId = <?= json_encode($post['id']) ?>;
 
 		function loadImages(postId) {
 			fetch('../functions/getpicperpost.php?post_id=' + postId)
@@ -368,9 +284,9 @@
 					console.error('Error loading likes:', err);
 				});
 		}
-
+		
 		document.addEventListener('DOMContentLoaded', () => {
-			const postIds = <?= json_encode(array_column($myposts, 'id')) ?>;
+			const postIds = <?= json_encode(array_column($theirposts, 'id')) ?>;
 
 			postIds.forEach(postId => {
 				loadImages(postId);
@@ -414,9 +330,6 @@
 	<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 	
 	<script src="../static/js/nav.js"></script>
-
-	<script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.js"></script>
-	<script src="../static/js/imagecrop.js"></script>
 
 	<script src="../static/js/profileupdate.js"></script>
 </body>

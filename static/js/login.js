@@ -17,7 +17,6 @@ form.addEventListener('submit', function(e) {
     try {
         const data = JSON.parse(text);
         if(data.success){
-        alert(data.message);
         this.reset();
         window.location.href = './templates/dashboard.php';
         } else {

@@ -11,13 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $email = isset($_POST['REmail']) ? clean($_POST['REmail']) : null;
     $pass = isset($_POST['RPSW']) ? clean($_POST['RPSW']) : null;
-    $name = isset($_POST['RName']) ? clean($_POST['RName']) : null;
-    $surname = isset($_POST['RSurname']) ? clean($_POST['RSurname']) : null;
-    $activity = isset($_POST['RAT']) ? clean($_POST['RAT']) : null;
-    $dob = isset($_POST['RDOB']) ? clean($_POST['RDOB']) : null;
-    $country = isset($_POST['RCountry']) ? clean($_POST['RCountry']) : null;
-    $province = isset($_POST['RProvince']) ? clean($_POST['RProvince']) : null;
-    $town = isset($_POST['RTown']) ? clean($_POST['RTown']) : null;
+    $name = isset($_POST['name']) ? clean($_POST['name']) : null;
+    $surname = isset($_POST['surname']) ? clean($_POST['surname']) : null;
+    $activity = isset($_POST['at']) ? clean($_POST['at']) : null;
+    $dob = isset($_POST['dob']) ? clean($_POST['dob']) : null;
+    $country = isset($_POST['country']) ? clean($_POST['country']) : null;
+    $province = isset($_POST['province']) ? clean($_POST['province']) : null;
+    $town = isset($_POST['town']) ? clean($_POST['town']) : null;
 
     date_default_timezone_set('Europe/Madrid');
     $register_date = date('Y-m-d H:i:s');
@@ -54,6 +54,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ]);
 
         if ($success) {
+            $user_id = $pdo->lastInsertId();
+
+            $defaultpfp = "INSERT INTO image (user_id, name, size, height, width, path)
+                            VALUES (:user_id, :name, :size, :height, :width, :path)";
+            $stmt = $pdo->prepare($defaultpfp);
+            $stmt->execute([
+                ':user_id' => $user_id,
+                ':name' => "default",
+                ':size' => 16865,
+                ':height' => 300,
+                ':width' => 300,
+                ':path' => "../static/assets/img_6836ee1b0b130.png"
+            ]);
+            $image_id = $pdo->lastInsertId();
+
+            $stmt = $pdo->prepare("INSERT INTO profileimage (user_id, image_id) 
+                                    VALUES (:user_id, :image_id)");
+            $stmt->execute([
+                ':user_id' => $user_id,
+                ':image_id' => $image_id
+            ]);
+
             $response['success'] = true;
             $response['message'] = 'Account successfully registered';
         } else {

@@ -30,9 +30,9 @@
           <ul class="navbar-nav ms-auto">
             <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
             <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
-            <li class="nav-item"><a class="nav-link" href="friends.html">Friends</a></li>
+            <li class="nav-item"><a class="nav-link" href="friends.php">Friends</a></li>
             <?php if ($_SESSION['user_role'] == "1"): ?>
-              <li class="nav-item"><a class="nav-link" href="admin.html">Administration</a></li>
+              <li class="nav-item"><a class="nav-link" href="admin.php">Administration</a></li>
             <?php endif; ?>
             <li class="nav-item"><a class="nav-link" href="../routes/logout.php">Logout</a></li>
           </ul>
@@ -87,104 +87,7 @@
     <!-- end prompt   -->
     <h3 class="text-xl font-semibold mb-4" style="color: white;">Posts</h3>
     <!-- Posts Section Starts Here -->
-    <h2 id="js-error" style="padding: 20px;">Loading...</h2>
-    <div id="mother">
-      <div class="reaction" id="emojies">
-        <div class="row">
-          <img id="e-like" src="../static/svg/like.svg" alt="Like">
-        </div>
-      </div>
-
-      <div class="boxwrapper" data-post-id="0">
-        <!-- Top Section -->
-        <div class="top-s">
-          <div class="top-info">
-            <div class="profile-picture">
-              <img src="../static/assets/profile-pic.jpg" alt="Profile picture">
-            </div>
-            <div class="top-title">
-              <div class="profile-name">
-                <a href="#">Sportbook Tester</a>
-              </div>
-            </div>
-          </div>
-          <div class="post-content">
-            <strong>Sportbook Post</strong><br />
-            Hello world <br />
-            I'm feeling great today!
-          </div>
-        </div>
-
-        <!-- Like Section -->
-        <div class="like-section">
-          <div class="top-part">
-            <div class="left-part">
-              <div class="react">
-                <img src="../static/svg/like.svg" alt="Like Reaction">
-              </div>
-              <div class="id-name">
-                <p>You, Tester2 and <span>9</span> others</p>
-              </div>
-            </div>
-          </div>
-          <div class="bottom-part">
-            <div class="like-btn" data-fpost="0">
-              <img src="../static/svg/thumbs-up.svg" alt="Like">
-              <span>Like</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Post1 Section Ends Here -->
-    <!-- Post2 Section starts here -->
-    <div class="reaction" id="emojies">
-      <div class="row">
-        <img id="e-like" src="../static/svg/like.svg" alt="Like">
-      </div>
-    </div>
-
-    <div class="boxwrapper" data-post-id="0">
-      <!-- Top Section -->
-      <div class="top-s">
-        <div class="top-info">
-          <div class="profile-picture">
-            <img src="../static/assets/profile-pic.jpg" alt="Profile picture">
-          </div>
-          <div class="top-title">
-            <div class="profile-name">
-              <a href="#">Sportbook Tester</a>
-            </div>
-          </div>
-        </div>
-        <div class="post-content">
-          <strong>Sportbook Post</strong><br />
-          Hello world <br />
-          I'm feeling great today!
-        </div>
-      </div>
-
-      <!-- Like Section -->
-      <div class="like-section">
-        <div class="top-part">
-          <div class="left-part">
-            <div class="react">
-              <img src="../static/svg/like.svg" alt="Like Reaction">
-            </div>
-            <div class="id-name">
-              <p>You, Tester2 and <span>9</span> others</p>
-            </div>
-          </div>
-        </div>
-        <div class="bottom-part">
-          <div class="like-btn" data-fpost="0">
-            <img src="../static/svg/thumbs-up.svg" alt="Like">
-            <span>Like</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Post2 Section Ends Here -->
+		
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

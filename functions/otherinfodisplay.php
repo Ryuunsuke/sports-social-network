@@ -1,7 +1,7 @@
 <?php
 	require "display.php";
 
-	$user_id = $_SESSION['user_id'];
+	$user_id = $_GET['id'];
 	//retrieving user's information from database
     $sql = "SELECT * FROM user WHERE id = :user_id";
     $stmt = $pdo->prepare($sql);
@@ -9,21 +9,16 @@
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 	
 	$query = $pdo->prepare("
-		SELECT 
-			p.id, p.user_id, p.title, p.post_date, p.route_id,
-			at.name AS activity_type_name,
-			GROUP_CONCAT(DISTINCT partner.name SEPARATOR ', ') AS partners
+		SELECT p.id, p.user_id, p.title, p.post_date, p.route_id,
+			at.name AS activity_type_name
 		FROM post p
 		JOIN user u ON p.user_id = u.id
 		JOIN activitytype at ON p.activity_type_id = at.id
-		JOIN friend f ON f.user_id = u.id
-		JOIN user partner ON f.friend_id = partner.id
 		WHERE u.id = :user_id
-		GROUP BY p.id
 		ORDER BY p.post_date DESC
 	");
 	$query->execute([':user_id' => $user_id]);
-	$myposts = $query->fetchAll(PDO::FETCH_ASSOC);
+	$theirposts = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	$surname = $user['surname'];
 	$dob = $user['birth_date'];

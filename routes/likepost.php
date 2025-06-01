@@ -13,6 +13,4 @@ if ($check->rowCount() == 0) {
     $insert->execute([$post_id, $user_id]);
 }
 
-header("Location: ../templates/profile.php");
-exit;
 ?>
