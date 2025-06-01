@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['croppedImage'])) {
         ]);
         $image_id = $pdo->lastInsertId();
         
-        $sql = "INSERT INTO profileimage (user_id, image_id) VALUES (:user_id, :image_id)";
+        $sql = "UPDATE profileimage SET image_id = :image_id WHERE user_id = :user_id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':user_id' => $_SESSION['user_id'],
