@@ -3,8 +3,22 @@
     
     $user_id = $_SESSION['user_id'] ?? null;
 
+    $sql = "SELECT unsubscribe_date FROM user WHERE id = :user_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':user_id' => $user_id]);
+    $dereg = $stmt->fetch();
+        if ($dereg && !empty($dereg['unsubscribe_date'])) {
+                echo "<script>
+                        alert('Your account has been deregistered.');
+                        window.location.href = '../index.php';
+                </script>";
+                $_SESSION = [];
+                session_destroy();
+                exit();
+        }
+
     if (!$user_id) {
-    echo "<script>
+        echo "<script>
             alert('You must be logged in to access this page.');
             window.location.href = '../index.php';
         </script>";

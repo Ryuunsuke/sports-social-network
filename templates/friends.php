@@ -88,7 +88,6 @@
 						<div class="w-full space-y-3 pl-6">
 							<form method="post" action="">
 								<input type="text" name="name" id="name" value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>" placeholder="Name"/> 
-								and 
 								<input type="text" name="surname" id="surname" value="<?php echo isset($_POST['surname']) ? htmlspecialchars($_POST['surname']) : ''; ?>" placeholder="Surname"/> 
 								<input type="submit" value="Find" name="Find"/>
 							</form>

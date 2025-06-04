@@ -271,7 +271,6 @@
 		<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 		<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 
-		<script src="./static/js/index.js"></script>
 		<script src="./static/js/login.js"></script>
 		<script src="./static/js/signup.js"></script>
 		<script src="./static/js/indexnavbar.js"></script>

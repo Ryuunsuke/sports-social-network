@@ -7,7 +7,7 @@
     if (isset($_GET['country_id'])) {
 		$country_id = $_GET['country_id'];
 
-		$sql = "SELECT * FROM province WHERE country_id = ?";
+		$sql = "SELECT * FROM province WHERE country_id = ? ORDER BY name";
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute([$country_id]);
 		$provinces = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -21,7 +21,7 @@
 	if (isset($_GET['province_id'])) {
 		$province_id = $_GET['province_id'];
 
-		$sql = "SELECT * FROM town WHERE province_id = ?";
+		$sql = "SELECT * FROM town WHERE province_id = ? ORDER BY name";
 		$stmt = $pdo->prepare($sql);
 		$stmt->execute([$province_id]);
 		$towns = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,27 +32,27 @@
 	}
 
     //selecting country + province + town to store results
-    $sql = "SELECT * FROM country";
+    $sql = "SELECT * FROM country ORDER BY name";
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute();
 	$country = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	$sql = "SELECT * FROM province";
+	$sql = "SELECT * FROM province ORDER BY name";
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute();
 	$province = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	$sql = "SELECT * FROM town";
+	$sql = "SELECT * FROM town ORDER BY name";
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute();
 	$town = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	$sql = "SELECT * FROM activitytype";
+	$sql = "SELECT * FROM activitytype ORDER BY name";
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute();
 	$AT = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	$stmt = $pdo->prepare("SELECT * FROM route");
+	$stmt = $pdo->prepare("SELECT * FROM route ORDER BY name");
     $stmt->execute();
     $routes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
