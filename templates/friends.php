@@ -31,8 +31,8 @@
 						<li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
 						<li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
 						<li class="nav-item"><a class="nav-link" href="friends.php">Friends</a></li>
-						<?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == "1"): ?>
-						<li class="nav-item"><a class="nav-link" href="admin.html">Administration</a></li>
+						<?php if ($_SESSION['user_role'] == "1"): ?>
+						<li class="nav-item"><a class="nav-link" href="admin.php">Administration</a></li>
 						<?php endif; ?>
 						<li class="nav-item"><a class="nav-link" href="../routes/logout.php">Logout</a></li>
 					</ul>
