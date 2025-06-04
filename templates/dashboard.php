@@ -92,7 +92,7 @@
     <!-- end prompt   -->
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
-		<script src="https://rawcdn.githack.com/mpetazzoni/leaflet-gpx/master/gpx.js" defer></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.7.0/gpx.min.js" defer></script>
 
     <h3 class="text-xl font-semibold mb-4" style="color: white;">Posts</h3>
     <!-- Posts Section Starts Here -->
@@ -117,7 +117,7 @@
 						<div class="post-content">
 							<strong><?= htmlspecialchars($post['title']) ?></strong><br />
 							Activity Type: <?= htmlspecialchars($post['activity_type_name']) ?><br />
-							Partner(s): <?= htmlspecialchars($post['partners']) ?><br />
+							Partner(s): <?= htmlspecialchars($post['partners'] !== null ? $post['partners'] : 'None') ?><br />
 						</div>
 					</div>
 

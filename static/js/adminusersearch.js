@@ -2,12 +2,9 @@ document.getElementById('usersearch').addEventListener('submit', function(e) {
     e.preventDefault();
 
     const resultsDiv = document.getElementById('id03');
-
-    // Check if #id03 is visible (not display:none, and has size)
     const isVisible = resultsDiv.offsetParent !== null;
 
     if (!isVisible) {
-        // If not visible, do nothing (or optionally alert)
         return;
     }
 
@@ -32,6 +29,7 @@ document.getElementById('usersearch').addEventListener('submit', function(e) {
             card.classList.add('user-card');
 
             const isUnsubscribed = user.unsubscribe_date !== null;
+            const isSuper = user.user_role === 1; // adjust based on your system
 
             card.innerHTML = `
                 <img src="${user.profilepic}" alt="${user.name}" />
@@ -40,21 +38,50 @@ document.getElementById('usersearch').addEventListener('submit', function(e) {
                     <button 
                         class="action-button" 
                         data-user-id="${user.id}" 
-                        data-action="${user.unsubscribe_date === null ? 'unsubscribe' : 'subscribe'}">
-                        ${user.unsubscribe_date === null ? 'Unsubscribe' : 'Subscribe'}
+                        data-action="${isUnsubscribed ? 'subscribe' : 'unsubscribe'}">
+                        ${isUnsubscribed ? 'Subscribe' : 'Unsubscribe'}
+                    </button>
+                    <button 
+                        class="super-button"
+                        data-user-id="${user.id}"
+                        data-super-action="${isSuper ? 'remove-super' : 'make-super'}">
+                        ${isSuper ? 'Remove Super' : 'Make Super'}
                     </button>
                 </div>
             `;
             results.appendChild(card);
         });
 
-        // Add button event listeners
+        // Unsubscribe/Subscribe button handler
         document.querySelectorAll('.action-button').forEach(button => {
             button.addEventListener('click', function() {
                 const userId = this.getAttribute('data-user-id');
                 const action = this.getAttribute('data-action');
-
                 const target = action === 'unsubscribe' ? 'deregister.php' : 'resubscribe.php';
+
+                fetch(`../../routes/${target}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `id=${encodeURIComponent(userId)}`
+                })
+                .then(res => res.text())
+                .then(msg => {
+                    alert(msg);
+                    document.getElementById('usersearch').dispatchEvent(new Event('submit'));
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Operation failed.');
+                });
+            });
+        });
+
+        // Super privilege toggle button handler
+        document.querySelectorAll('.super-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const userId = this.getAttribute('data-user-id');
+                const superAction = this.getAttribute('data-super-action');
+                const target = superAction === 'make-super' ? 'make_super.php' : 'remove_super.php';
 
                 fetch(`../../routes/${target}`, {
                     method: 'POST',

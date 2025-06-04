@@ -7,7 +7,7 @@ $name = $_POST['name'] ?? '';
 $surname = $_POST['surname'] ?? '';
 
 // Fetch user info, image path, and unsubscribe status
-$sql = "SELECT u.id, u.name, u.surname, i.path AS profilepic, u.unsubscribe_date 
+$sql = "SELECT u.id, u.name, u.surname, u.role_id AS user_role, i.path AS profilepic, u.unsubscribe_date 
         FROM user u
         JOIN profileimage pfp ON pfp.user_id = u.id
         JOIN image i ON i.id = pfp.image_id
