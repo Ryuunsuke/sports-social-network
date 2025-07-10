@@ -96,8 +96,12 @@ Friend page for user search engine and user display after adding
 </p>
 Admin page for managing datas
 
+
 Future updates
+
 Making posts able to add multiple user that the current user has added
+
 Admin page with more specific and detail functions
+
 Code optimizations
 
