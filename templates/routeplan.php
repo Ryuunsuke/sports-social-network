@@ -35,9 +35,9 @@
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="dashboard.php">Dashboard</a></li>
                         <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="friends.html">Friends</a></li>
+                        <li class="nav-item"><a class="nav-link" href="friends.php">Friends</a></li>
                         <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] == "1"): ?>
-                        <li class="nav-item"><a class="nav-link" href="admin.html">Administration</a></li>
+                        <li class="nav-item"><a class="nav-link" href="admin.php">Administration</a></li>
                         <?php endif; ?>
                         <li class="nav-item"><a class="nav-link" href="../routes/logout.php">Logout</a></li>
                     </ul>
@@ -197,16 +197,17 @@
 
                     <!-- Partners -->
                     <label for="partner"><b>(Optional) Choose partners for activity</b></label><br>
-                    <select id="partner" name="partner">
-                        <option value="">--Select a partner from your added friends--</option>
-                        <?php if ($partners): ?>
+
+                    <select id="partner" name="partner[]" multiple style="width: 300px; height: 100px; overflow-y: scroll;">
+                        <?php if (!empty($partners)): ?>
+                            <option disabled>--Select partners from your added friends--</option>
                             <?php foreach ($partners as $partner): ?>
                                 <option value="<?= htmlspecialchars($partner['id']) ?>">
                                     <?= htmlspecialchars($partner['name']) ?>
                                 </option>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <option value="">You have no friends</option>
+                            <option disabled>You have no friends</option>
                         <?php endif; ?>
                     </select><br>
 
