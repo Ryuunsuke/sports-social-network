@@ -47,3 +47,57 @@ How to run the software
 -	It uses MariaDB:3307 to store datas and retrieve from.
 
 Example pages:
+<p align="center">
+  <img src="./static/assets/startpage.png" height="250px">
+</p>
+The start of the website
+
+<p align="center">
+  <img src="./static/assets/Pictyre2.png" height="250px">
+</p>
+Template from bootstrap
+
+<p align="center">
+  <img src="./static/assets/login.png" height="250px">
+</p>
+Login form
+
+<p align="center">
+  <img src="./static/assets/register.png" height="250px">
+</p>
+Register form
+
+<p align="center">
+  <img src="./static/assets/dashboard.png" height="250px">
+</p>
+Dashboard page
+
+<p align="center">
+  <img src="./static/assets/postanactivity.png" height="250px">
+</p>
+Posting an activity
+
+<p align="center">
+  <img src="./static/assets/postexample.png" height="250px">
+</p>
+An example post after posting
+
+<p align="center">
+  <img src="./static/assets/profile.png" height="250px">
+</p>
+
+<p align="center">
+  <img src="./static/assets/friend.png" height="250px">
+</p>
+Friend page for user search engine and user display after adding
+
+<p align="center">
+  <img src="./static/assets/admin.png" height="250px">
+</p>
+Admin page for managing datas
+
+Future updates
+Making posts able to add multiple user that the current user has added
+Admin page with more specific and detail functions
+Code optimizations
+
